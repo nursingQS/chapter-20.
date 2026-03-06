@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 20 · Chronic Pulmonary Disease</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1b3b4f, #285f73);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: #ecf3f7;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(10, 30, 40, 0.5);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1f5e7a, #0d3f55);
+            color: white;
+            padding: 20px 30px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+            border-bottom: 5px solid #68b9d9;
+            box-shadow: 0 6px 15px #0a2e40;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header h1 {
+            font-size: 1.9rem;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1::before {
+            content: "🫁";
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 2px #0b3e4f);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        .counter {
+            background: #154352;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            min-width: 110px;
+            text-align: center;
+            backdrop-filter: blur(3px);
+            border: 2px solid #a2d6f0;
+            color: #f0faff;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #c2ddee;
+            flex-shrink: 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #2f9e7a, #1d7057);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px #269672;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 30px;
+            background: #dcebf3;
+        }
+
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            background: white;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(21, 65, 85, 0.2);
+            border: 2px solid #b4d9ee;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            background: linear-gradient(145deg, #1d7a9c, #0f5570);
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            border: 3px solid #a1d6f0;
+            box-shadow: 0 7px 0 #07303f;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #043b4e;
+            flex-grow: 1;
+            font-weight: 600;
+            padding-right: 15px;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            padding: 20px 22px;
+            border: 3px solid #cae1f0;
+            border-radius: 22px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 1.15rem;
+            box-shadow: 0 5px 12px rgba(12, 61, 80, 0.08);
+        }
+
+        .option:hover {
+            background: #eff9ff;
+            border-color: #2e8ca8;
+            transform: translateY(-3px);
+            box-shadow: 0 18px 25px rgba(31, 106, 133, 0.15);
+        }
+
+        .option-letter {
+            background: linear-gradient(145deg, #2a7f9c, #135e7a);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+            font-size: 1.3rem;
+            border: 2px solid #b2def5;
+        }
+
+        .option.correct {
+            background: linear-gradient(145deg, #b9e6cf, #9fd8bb);
+            border-color: #1d7e55;
+            color: #0b3623;
+        }
+        .option.correct .option-letter {
+            background: #0f7c4f;
+            border-color: #abedcc;
+        }
+
+        .option.incorrect {
+            background: linear-gradient(145deg, #f9dbd9, #fccac7);
+            border-color: #b13e3e;
+            color: #5b1e1e;
+        }
+        .option.incorrect .option-letter {
+            background: #b13e3e;
+            border-color: #f0b3b3;
+        }
+
+        .feedback-area {
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 25px;
+            border-radius: 20px;
+            display: none;
+            align-items: center;
+            gap: 20px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            animation: slideIn 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(145deg, #c7eedb, #b2e2ca);
+            border: 3px solid #1e7e58;
+            color: #0c412b;
+            display: flex;
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(145deg, #ffdedb, #fecbc7);
+            border: 3px solid #bb3b3b;
+            color: #632020;
+            display: flex;
+        }
+
+        .feedback-icon {
+            font-size: 2rem;
+        }
+
+        .rationale {
+            background: linear-gradient(145deg, #fef6e5, #fbebcd);
+            border: 3px solid #cf8b3a;
+            border-radius: 20px;
+            padding: 25px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        .rationale.show {
+            display: block;
+        }
+        .rationale h4 {
+            color: #9e601c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+        .rationale p {
+            color: #543d0e;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 35px;
+            background: #bee0f0;
+            border-top: 3px solid #8bc1db;
+            flex-shrink: 0;
+            height: 85px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 16px 42px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            box-shadow: 0 6px 0 #154455;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #187b9e, #0a5877);
+            color: white;
+            border: 2px solid #9dd0ec;
+        }
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 0 #0b3343, 0 8px 20px #1f6f8f;
+        }
+        .btn-secondary {
+            background: linear-gradient(145deg, #316d85, #1b5268);
+            color: white;
+            border: 2px solid #b2d7f0;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 0 #173d4d, 0 8px 20px #2e6279;
+        }
+        .btn-cancel {
+            background: linear-gradient(145deg, #d67a7a, #b84545);
+            color: white;
+            display: none;
+            border: 2px solid #f2baba;
+        }
+        .btn-cancel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 0 #632d2d;
+        }
+        .btn-cancel.show {
+            display: flex;
+        }
+
+        .btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 0 4px 0 #1b485e;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 700px) {
+            .question-text { font-size: 1.2rem; }
+            .option { font-size: 1rem; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header-content">
+            <h1>Chapter 20: Chronic Pulmonary Disease</h1>
+            <div class="subtitle">40 questions · COPD · asthma · bronchiectasis · CF</div>
+        </div>
+        <div class="counter" id="counter">1/40</div>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="main-content">
+        <div class="question-area">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">1</div>
+                <div class="question-text" id="question"></div>
+            </div>
+            
+            <div class="options-container" id="options"></div>
+        </div>
+        
+        <div class="feedback-area">
+            <div class="feedback" id="feedback">
+                <div class="feedback-icon" id="feedbackIcon"></div>
+                <div id="feedbackText"></div>
+            </div>
+            <div class="rationale" id="rationale">
+                <h4>📘 PULMONARY RATIONALE:</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">⬅️ PREV</button>
+        <div class="nav-buttons">
+            <button class="btn btn-cancel" id="cancelBtn" onclick="cancelSelection()">✖️ CANCEL</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">NEXT ➡️</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ----- Chapter 20 exact questions -----
+    const questions = [
+        { //1
+            id: 1,
+            question: "A nurse is caring for a 21-year-old client whose medical history includes an alpha1-antitrypsin deficiency. This client has an increased risk of which health problem?",
+            options: [
+                "A. Pulmonary edema",
+                "B. Panacinar emphysema",
+                "C. Cystic fibrosis (CF)",
+                "D. Empyema"
+            ],
+            correct: 1, // B
+            rationale: "Alpha1-antitrypsin deficiency predisposes young adults to rapid development of panacinar lobular emphysema, even without smoking. It does not increase risk of pulmonary edema, CF, or empyema. (PTS:1 REF:p.607)"
+        },
+        { //2
+            id: 2,
+            question: "The nurse is assessing a client whose respiratory disease is characterized by chronic hyperinflation of the lungs. Which physical characteristic would the nurse most likely observe in this client?",
+            options: [
+                "A. Signs of oxygen toxicity",
+                "B. A moon face",
+                "C. A barrel chest",
+                "D. Long, thin fingers"
+            ],
+            correct: 2, // C
+            rationale: "Chronic hyperinflation in COPD (emphysematous type) leads to barrel chest. Moon face is from steroids; oxygen toxicity unlikely; clubbing (not long thin fingers) may occur. (PTS:1 REF:p.606)"
+        },
+        { //3
+            id: 3,
+            question: "The nurse is providing care for a client who has recently been diagnosed with chronic obstructive pulmonary disease. When educating the client about exacerbations, the nurse should prioritize which topic?",
+            options: [
+                "A. Identifying specific causes of exacerbations",
+                "B. Prompt administration of corticosteroids during exacerbations",
+                "C. The importance of prone positioning during exacerbations",
+                "D. The relationship between activity level and exacerbations"
+            ],
+            correct: 0, // A
+            rationale: "Prevention is key: client must identify factors that cause exacerbations. Corticosteroids not 'rescue'; prone does not help; activity impact is secondary to prevention. (PTS:1 REF:p.616)"
+        },
+        { //4
+            id: 4,
+            question: "A school nurse is caring for a 10-year-old client who is having an asthma attack. What is the preferred intervention to alleviate this client's airflow obstruction?",
+            options: [
+                "A. Administer corticosteroids by metered dose inhaler.",
+                "B. Administer inhaled anticholinergics.",
+                "C. Administer an inhaled beta-adrenergic agonist.",
+                "D. Use a peak flow monitoring device."
+            ],
+            correct: 2, // C
+            rationale: "Quick-acting beta-adrenergic agonists are first for prompt relief of airflow obstruction. Steroids are not first-line rescue; peak flow monitors assess, not treat. (PTS:1 REF:p.635)"
+        },
+        { //5
+            id: 5,
+            question: "A nurse is developing a teaching plan for an adult client with asthma. Which teaching point should have the highest priority in the plan of care that the nurse is developing?",
+            options: [
+                "A. Gradually increase levels of physical exertion.",
+                "B. Change filters on heaters and air conditioners frequently.",
+                "C. Take prescribed medications as scheduled.",
+                "D. Avoid goose-down pillows."
+            ],
+            correct: 2, // C
+            rationale: "Taking prescribed medications on time is the most important measure in preventing asthma attacks. Others are helpful but lower priority. (PTS:1 REF:p.640)"
+        },
+        { //6
+            id: 6,
+            question: "A nurse is preparing to care for a client with bronchiectasis. The nurse should recognize that this client is likely to experience respiratory difficulties related to what pathophysiologic process?",
+            options: [
+                "A. Intermittent episodes of acute bronchospasm",
+                "B. Alveolar distention and impaired diffusion",
+                "C. Dilation of bronchi and bronchioles",
+                "D. Excessive gas exchange in the bronchioles"
+            ],
+            correct: 2, // C
+            rationale: "Bronchiectasis is chronic irreversible dilation of bronchi and bronchioles from destruction of muscles/elastic tissue. Not acute bronchospasm, alveolar distention, or excessive gas exchange. (PTS:1 REF:p.631)"
+        },
+        { //7
+            id: 7,
+            question: "A nurse is caring for a 6-year-old client with cystic fibrosis. To enhance the child's nutritional status, which priority intervention should be included in the plan of care?",
+            options: [
+                "A. Pancreatic enzyme supplementation with meals",
+                "B. Provision of five to six small meals per day rather than three larger meals",
+                "C. Total parenteral nutrition (TPN)",
+                "D. Magnesium, thiamine, and iron supplementation"
+            ],
+            correct: 0, // A
+            rationale: "Nearly 90% of CF patients have pancreatic exocrine insufficiency and require oral pancreatic enzymes with meals. Small meals or TPN not typical; vitamin supplements needed but not those specific minerals as priority. (PTS:1 REF:p.645)"
+        },
+        { //8
+            id: 8,
+            question: "The nurse is caring for a client with bronchiectasis. Chest auscultation reveals the presence of copious secretions. What intervention should the nurse prioritize in this client's care?",
+            options: [
+                "A. Oral administration of diuretics",
+                "B. Intravenous fluids to reduce the viscosity of secretions",
+                "C. Postural chest drainage",
+                "D. Pulmonary function testing"
+            ],
+            correct: 2, // C
+            rationale: "Postural drainage is part of all treatment plans for bronchiectasis to reduce secretions and infection. Diuretics/IV fluids not helpful; PFT may be done but does not relieve symptoms. (PTS:1 REF:p.632)"
+        },
+        { //9
+            id: 9,
+            question: "A nurse is completing a focused respiratory assessment of a child with asthma. What assessment finding is most closely associated with the characteristic signs and symptoms of asthma?",
+            options: [
+                "A. Shallow respirations",
+                "B. Increased anterior–posterior (AP) diameter",
+                "C. Bilateral wheezes",
+                "D. Bradypnea"
+            ],
+            correct: 2, // C
+            rationale: "Common asthma symptoms: cough, dyspnea, wheezing. Wheezing is hallmark. Bradypnea and increased AP diameter not typical in acute asthma. (PTS:1 REF:p.633)"
+        },
+        { //10
+            id: 10,
+            question: "A nurse is developing the teaching portion of a care plan for a client with COPD. What would be the most important component for the nurse to emphasize?",
+            options: [
+                "A. Smoking up to three cigarettes weekly is generally allowable.",
+                "B. Chronic inhalation of indoor toxins can cause lung damage.",
+                "C. Minor respiratory infections are considered to be self-limited and are not treated with medication.",
+                "D. Activities of daily living (ADLs) should be clustered in the early morning hours."
+            ],
+            correct: 1, // B
+            rationale: "Environmental risk factors (indoor/outdoor toxins) are key teaching. Smoking cessation essential; infections may be severe; ADLs should be paced, not clustered. (PTS:1 REF:p.605)"
+        },
+        { //11
+            id: 11,
+            question: "A nurse is planning the care of a client with emphysema who will soon be discharged. What teaching should the nurse prioritize in the plan of care?",
+            options: [
+                "A. Taking prophylactic antibiotics as prescribed",
+                "B. Adhering to the treatment regimen in order to cure the disease",
+                "C. Avoiding airplanes, buses, and other crowded public places",
+                "D. Setting realistic short- and long-term goals"
+            ],
+            correct: 3, // D
+            rationale: "Major teaching: setting and accepting realistic short/long-term goals. Emphysema is not curable; prophylactic antibiotics not used; no need to avoid public places generally. (PTS:1 REF:p.608)"
+        },
+        { //12
+            id: 12,
+            question: "A nurse is performing a focused assessment on a client with bronchiectasis. Which are the most prevalent signs and symptoms of this condition? Select all that apply.",
+            options: [
+                "A. Radiating chest pain",
+                "B. Wheezes on auscultation",
+                "C. Increased anterior–posterior (AP) diameter",
+                "D. Copious, purulent sputum",
+                "E. Chronic cough"
+            ],
+            correct: [3,4], // D, E (copious purulent sputum, chronic cough)
+            rationale: "Bronchiectasis hallmark: chronic cough, copious purulent sputum, clubbing. Radiating chest pain not typical; wheezes more asthma; AP diameter in COPD. (PTS:1 REF:p.631)"
+        },
+        { //13
+            id: 13,
+            question: "A client with chronic obstructive pulmonary disease (COPD) reports increased shortness of breath after a prolonged episode of coughing. On assessment, the nurse notes an oxygen saturation of 84%, asymmetrical chest movement, and decreased breath sounds on the right side. Which condition should the nurse suspect and which interventions should the nurse implement based on these signs and symptoms?",
+            options: [
+                "A. Expected response to coughing; give supplemental oxygen and encourage deep breathing exercises",
+                "B. Pneumothorax; give supplemental oxygen and continue to monitor the client",
+                "C. Oxygen toxicity; lower any supplemental oxygen and continue to monitor the client",
+                "D. Chronic atelectasis; give supplemental oxygen and encourage deep breathing exercises"
+            ],
+            correct: 1, // B
+            rationale: "Asymmetry, decreased breath sounds, desaturation after coughing suggest pneumothorax. Give O2, monitor closely. Not normal response; not atelectasis or oxygen toxicity. (PTS:1 REF:p.623)"
+        },
+        { //14
+            id: 14,
+            question: "A nurse has been asked to give a workshop on chronic obstructive pulmonary disease for a local community group. The nurse emphasizes the importance of smoking cessation because smoking has which pathophysiologic effect?",
+            options: [
+                "A. Increases the amount of mucus produced",
+                "B. Destabilizes hemoglobin",
+                "C. Shrinks the alveoli in the lungs",
+                "D. Collapses the alveoli in the lungs"
+            ],
+            correct: 0, // A
+            rationale: "Smoking irritates goblet cells/mucous glands → increased mucus. Does not destabilize hemoglobin, shrink or collapse alveoli directly. (PTS:1 REF:p.605)"
+        },
+        { //15
+            id: 15,
+            question: "A pediatric nurse practitioner is caring for a 2-year-old client who has just been diagnosed with asthma. The nurse has provided the parents with information that includes potential causative agents for an asthmatic reaction. Which potential causative agent that may trigger an attack should the nurse describe?",
+            options: [
+                "A. Household pets",
+                "B. Inadequate sleep",
+                "C. Psychosocial stress",
+                "D. Bacteria"
+            ],
+            correct: 0, // A
+            rationale: "Common triggers: dust, pets, pollen, molds. Inadequate sleep may aggravate but not common trigger for 2-yo; stress rare in toddler; viral (not bacterial) linked. (PTS:1 REF:p.634)"
+        },
+        { //16
+            id: 16,
+            question: "A nurse is providing discharge teaching for a client with COPD. What should the nurse teach the client about breathing exercises?",
+            options: [
+                "A. Lie supine to facilitate air entry.",
+                "B. Avoid pursed-lip breathing unless absolutely necessary.",
+                "C. Use diaphragmatic breathing.",
+                "D. Use chest breathing."
+            ],
+            correct: 2, // C
+            rationale: "Diaphragmatic breathing reduces RR, increases alveolar ventilation. Pursed-lip helps; supine does not facilitate; chest breathing is less efficient. (PTS:1 REF:p.620)"
+        },
+        { //17
+            id: 17,
+            question: "A nurse is caring for a client who has been admitted with an exacerbation of chronic bronchiectasis. The nurse should expect to assess the client for which clinical manifestation?",
+            options: [
+                "A. Hemoptysis",
+                "B. Pain on inspiration",
+                "C. Pigeon chest",
+                "D. Dry cough"
+            ],
+            correct: 0, // A
+            rationale: "Bronchiectasis manifestations: hemoptysis, chronic cough, copious purulent sputum, clubbing. Pain on inspiration not typical; pigeon chest not associated; cough is productive. (PTS:1 REF:p.632)"
+        },
+        { //18
+            id: 18,
+            question: "A nurse is reviewing the pathophysiology of cystic fibrosis (CF) in anticipation of a new admission. The nurse should identify what characteristic aspects of CF?",
+            options: [
+                "A. Alveolar mucus plugging, infection, and eventual bronchiectasis",
+                "B. Bronchial mucus plugging, inflammation, and eventual bronchiectasis",
+                "C. Atelectasis, infection, and eventual COPD",
+                "D. Bronchial mucus plugging, infection, and eventual COPD"
+            ],
+            correct: 1, // B
+            rationale: "CF hallmark: bronchial mucus plugging, inflammation, eventual bronchiectasis (usually starts upper lobes). Not primarily alveolar; atelectasis secondary; COPD not the endpoint. (PTS:1 REF:p.643)"
+        },
+        { //19
+            id: 19,
+            question: "A 67-year-old client with severe bilateral arthritis of the hands has been diagnosed with chronic obstructive pulmonary disease. Which inhalation delivery method is best for the bronchodilator ordered for this client?",
+            options: [
+                "A. A conventional pressurized metered-dose inhaler (pMDI)",
+                "B. A small-volume nebulizer (SVN)",
+                "C. A breath-actuated pressurized metered-dose inhaler (pMDI)",
+                "D. A dry-powder inhaler (DPI)"
+            ],
+            correct: 1, // B
+            rationale: "SVN requires minimal dexterity – just breathing. pMDI/DPI require hand dexterity/coordination; arthritis makes them difficult. (PTS:1 REF:p.616)"
+        },
+        { //20
+            id: 20,
+            question: "A nurse is preparing to perform an admission assessment on a client with chronic obstructive pulmonary disease (COPD). It is most important for the nurse to review which of the following?",
+            options: [
+                "A. Social work assessment",
+                "B. Finances",
+                "C. Chloride levels",
+                "D. Available diagnostic tests"
+            ],
+            correct: 3, // D
+            rationale: "The nurse reviews available diagnostic tests (PFTs, ABGs) to guide care. Social work/finances not priority; chloride relevant to CF, not COPD. (PTS:1 REF:p.619)"
+        },
+        { //21
+            id: 21,
+            question: "A client with chronic obstructive pulmonary disease has recently begun a new bronchodilator. Which therapeutic effect(s) should the nurse expect from this medication? Select all that apply.",
+            options: [
+                "A. Negative sputum culture",
+                "B. Increased viscosity of lung secretions",
+                "C. Increased respiratory rate",
+                "D. Increased expiratory flow rate",
+                "E. Relief of dyspnea"
+            ],
+            correct: [3,4], // D, E
+            rationale: "Bronchodilators improve expiratory flow and relieve dyspnea. They do not directly affect cultures; secretions viscosity may decrease; RR may decrease as work of breathing lessens. (PTS:1 REF:p.642)"
+        },
+        { //22
+            id: 22,
+            question: "A nurse's assessment reveals that a client with chronic obstructive pulmonary disease may be experiencing bronchospasm. Which assessment findings would suggest that the client is experiencing bronchospasm? Select all that apply.",
+            options: [
+                "A. Fine or coarse crackles on auscultation",
+                "B. Wheezes or diminished breath sounds on auscultation",
+                "C. Reduced respiratory rate or lethargy",
+                "D. Slow, deliberate respirations and diaphoresis",
+                "E. Labored and rapid breathing"
+            ],
+            correct: [1,4], // B, E (wheezes/diminished, labored rapid breathing)
+            rationale: "Bronchospasm causes wheezing/diminished sounds, labored rapid breathing. Crackles not typical; reduced rate/slow deliberate not expected. (PTS:1 REF:p.642)"
+        },
+        { //23
+            id: 23,
+            question: "The hospital case manager for a group of recently discharged clients with asthma is providing health education. Which aspect of client teaching would have the greatest impact on preventing readmissions?",
+            options: [
+                "A. Alternative treatment modalities",
+                "B. Family participation in care",
+                "C. Pathophysiology of the disease process",
+                "D. Self-care and the therapeutic regimen"
+            ],
+            correct: 3, // D
+            rationale: "Self-care and therapeutic regimen understanding (inhalers, avoidance) is essential for long-term control and preventing admissions. (PTS:1 REF:p.629)"
+        },
+        { //24
+            id: 24,
+            question: "A nurse is developing a teaching plan for a client with chronic obstructive pulmonary disease. What should the nurse include as the most important area of teaching?",
+            options: [
+                "A. Avoiding extremes of heat and cold",
+                "B. Setting and accepting realistic short- and long-term goals",
+                "C. Adopting a lifestyle of moderate activity",
+                "D. Avoiding emotional disturbances and stressful situations"
+            ],
+            correct: 1, // B
+            rationale: "Setting and accepting realistic short/long-term goals is major teaching priority in COPD. (PTS:1 REF:p.629)"
+        },
+        { //25
+            id: 25,
+            question: "A nurse is assessing a client who is suspected of having bronchiectasis. The nurse should consider which of the following potential causes? Select all that apply.",
+            options: [
+                "A. Pulmonary hypertension",
+                "B. Airway obstruction",
+                "C. Pulmonary infections",
+                "D. Genetic disorders",
+                "E. Atelectasis"
+            ],
+            correct: [1,2,3], // B, C, D (airway obstruction, infections, genetic disorders)
+            rationale: "Bronchiectasis causes: airway obstruction, diffuse airway injury, infections, genetic disorders (CF). Not caused by pulmonary hypertension or atelectasis. (PTS:1 REF:p.631)"
+        },
+        { //26
+            id: 26,
+            question: "A nurse is planning the care of a client with bronchiectasis. What goal of care should the nurse prioritize?",
+            options: [
+                "A. The client will successfully mobilize pulmonary secretions.",
+                "B. The client will maintain an oxygen saturation level of 98%.",
+                "C. The client's pulmonary blood pressure will decrease to within reference ranges.",
+                "D. The client will resume prediagnosis level of function within 72 hours."
+            ],
+            correct: 0, // A
+            rationale: "Nursing management focuses on alleviating symptoms and helping clear secretions. O2 sat >98% unrealistic; pressures not focus; rapid return unrealistic. (PTS:1 REF:p.632)"
+        },
+        { //27
+            id: 27,
+            question: "An interdisciplinary team is planning the care of a client with bronchiectasis. What aspects of care should the nurse anticipate? Select all that apply.",
+            options: [
+                "A. Occupational therapy",
+                "B. Antimicrobial therapy",
+                "C. Positive pressure isolation",
+                "D. Chest physiotherapy",
+                "E. Smoking cessation"
+            ],
+            correct: [1,3,4], // B, D, E (antimicrobial, chest physio, smoking cessation)
+            rationale: "Cornerstones: chest physiotherapy, antibiotics, smoking cessation. OT and isolation not normally indicated. (PTS:1 REF:p.631)"
+        },
+        { //28
+            id: 28,
+            question: "A client's severe asthma has necessitated the use of a long-acting beta2-agonist (LABA). Which of the client's statements suggests a correct understanding of this medication?",
+            options: [
+                "A. 'This drug may make my heart beat slower.'",
+                "B. 'This drug is particularly good at preventing asthma attacks during exercise.'",
+                "C. 'I'll make sure to use this each time I feel an asthma attack coming on.'",
+                "D. 'I understand that this drug is less effective at controlling night-time symptoms.'"
+            ],
+            correct: 1, // B
+            rationale: "LABAs are effective in preventing exercise-induced asthma and controlling night symptoms (with ICS). Not for acute relief; may cause tachycardia, not bradycardia. (PTS:1 REF:p.639)"
+        },
+        { //29
+            id: 29,
+            question: "A nurse is providing health education to the family of a client with bronchiectasis. Which technique should the nurse prioritize teaching the client's family members?",
+            options: [
+                "A. The correct technique for chest palpation and auscultation",
+                "B. Techniques for assessing the client's fluid balance",
+                "C. The technique for providing deep nasotracheal suctioning",
+                "D. The correct technique for providing postural drainage"
+            ],
+            correct: 3, // D
+            rationale: "Families are taught to perform postural drainage to help clear secretions. Palpation/auscultation and fluid balance less priority; nasotracheal suction not normally needed. (PTS:1 REF:p.632)"
+        },
+        { //30
+            id: 30,
+            question: "A nurse is working with a 10-year-old client who is undergoing a diagnostic workup for suspected asthma. Which signs and symptoms are consistent with a diagnosis of asthma? Select all that apply.",
+            options: [
+                "A. Chest tightness",
+                "B. Crackles",
+                "C. Bradypnea",
+                "D. Wheezing",
+                "E. Cough"
+            ],
+            correct: [0,3,4], // A, D, E (chest tightness, wheezing, cough)
+            rationale: "Asthma symptoms: cough, chest tightness, wheezing, dyspnea. Crackles and bradypnea not typical. (PTS:1 REF:p.632)"
+        },
+        { //31
+            id: 31,
+            question: "A nurse is developing a care plan for a client with chronic obstructive pulmonary disease (COPD) admitted to the hospital for the second time this year with pneumonia. Which nursing diagnoses would be appropriate for this client? Select all that apply.",
+            options: [
+                "A. Ineffective airway clearance related to inhalation of toxins",
+                "B. Activity intolerance related to oxygen supply and demand",
+                "C. Impaired gas exchange related to ventilation-perfusion inequality",
+                "D. Ineffective health management related to fatigue",
+                "E. Deficient knowledge regarding self-care related to preventable complications"
+            ],
+            correct: [2,4], // C, E
+            rationale: "Impaired gas exchange (due to V/Q mismatch) and deficient knowledge (repeated admissions) are appropriate. Not enough info for A, B, D as active problems. (PTS:1 REF:p.620)"
+        },
+        { //32
+            id: 32,
+            question: "A nurse is teaching a client with asthma about the proper use of the prescribed inhaled corticosteroid. Which adverse effect should the nurse be sure to address in client teaching?",
+            options: [
+                "A. Increased respiratory secretions",
+                "B. Bradycardia",
+                "C. Oral candidiasis",
+                "D. Decreased level of consciousness"
+            ],
+            correct: 2, // C
+            rationale: "Thrush/oral candidiasis is common with inhaled corticosteroids; rinse mouth after use. Tachycardia possible, not bradycardia; not sedation or increased secretions. (PTS:1 REF:p.635)"
+        },
+        { //33
+            id: 33,
+            question: "A nurse is explaining to a client with asthma with a new prescription for prednisone what it is used for. What would be the most accurate explanation that the nurse could give?",
+            options: [
+                "A. To ensure long-term prevention of asthma exacerbations",
+                "B. To cure any systemic infection underlying asthma attacks",
+                "C. To prevent recurrent pulmonary infections",
+                "D. To gain prompt control of inadequately controlled, persistent asthma"
+            ],
+            correct: 3, // D
+            rationale: "Prednisone is used for short-term 'burst' to gain prompt control of inadequately controlled persistent asthma. Not for infection or long-term prevention. (PTS:1 REF:p.635)"
+        },
+        { //34
+            id: 34,
+            question: "An asthma nurse educator is working with a group of adolescent asthma clients. What intervention is most likely to prevent asthma exacerbations among these clients?",
+            options: [
+                "A. Encouraging clients to carry a corticosteroid rescue inhaler at all times",
+                "B. Educating clients about recognizing and avoiding asthma triggers",
+                "C. Teaching clients to utilize alternative therapies in asthma management",
+                "D. Ensuring that clients keep their immunizations up to date"
+            ],
+            correct: 1, // B
+            rationale: "Exacerbations best prevented by early treatment and education, including trigger recognition/avoidance. Corticosteroids not rescue; alternative therapies not priority; immunizations important but not top for prevention. (PTS:1 REF:p.641)"
+        },
+        { //35
+            id: 35,
+            question: "An asthma educator is teaching a client newly diagnosed with asthma and the family about the use of a peak flow meter. The educator should teach the client that a peak flow meter measures highest airflow during which type of breath?",
+            options: [
+                "A. Forced inspiration",
+                "B. Forced expiration",
+                "C. Normal inspiration",
+                "D. Normal expiration"
+            ],
+            correct: 1, // B
+            rationale: "Peak flow meter measures highest airflow during a forced expiration. (PTS:1 REF:p.639)"
+        },
+        { //36
+            id: 36,
+            question: "A nurse is admitting a new client who has been admitted with a diagnosis of COPD exacerbation. How can the nurse best help the client achieve the goal of maintaining effective oxygenation?",
+            options: [
+                "A. Teach the client strategies for promoting diaphragmatic breathing.",
+                "B. Administer supplementary oxygen by simple face mask.",
+                "C. Teach the client to perform airway suctioning.",
+                "D. Assist the client in developing an appropriate exercise program."
+            ],
+            correct: 0, // A
+            rationale: "Diaphragmatic breathing reduces RR, increases alveolar ventilation, helps expiration. Suction not normally needed; oxygen not always by face mask; exercise may be later. (PTS:1 REF:p.627)"
+        },
+        { //37
+            id: 37,
+            question: "A client's plan of care specifies postural drainage. Which action should the nurse perform when providing this noninvasive therapy?",
+            options: [
+                "A. Administer the treatment with the client in a high Fowler or semi-Fowler position.",
+                "B. Perform the procedure immediately following the client's meals.",
+                "C. The client is instructed to avoid coughing during the therapy.",
+                "D. Assist the client into a position that will allow gravity to move secretions."
+            ],
+            correct: 3, // D
+            rationale: "Postural drainage uses gravity to drain secretions; positions vary. Done before meals to prevent aspiration; coughing encouraged. (PTS:1 REF:p.625)"
+        },
+        { //38
+            id: 38,
+            question: "The home care nurse is assessing a client who requires home oxygen therapy. What criterion indicates that an oxygen concentrator will best meet the needs of the client in the home environment?",
+            options: [
+                "A. The client desires a low-maintenance oxygen delivery system that delivers oxygen flow rates up to 6 L/min.",
+                "B. The client requires a high-flow system for use with a tracheostomy collar.",
+                "C. The client desires a portable oxygen delivery system that can deliver 2 L/min.",
+                "D. The client's respiratory status requires a system that provides an FiO2 of 65%."
+            ],
+            correct: 2, // C
+            rationale: "Oxygen concentrators deliver 1-10 L/min, FiO2 ~40%; portable for 2 L/min ideal. Not for high-flow or FiO2 >40%. (PTS:1 REF:p.630)"
+        },
+        { //39
+            id: 39,
+            question: "A client with a severe exacerbation of chronic obstructive pulmonary disease requires reliable and precise oxygen delivery. Which mask will the nurse expect the health care provider to prescribe?",
+            options: [
+                "A. Nonrebreathing mask",
+                "B. Tracheostomy collar",
+                "C. Venturi mask",
+                "D. Face tent"
+            ],
+            correct: 2, // C
+            rationale: "Venturi mask is most reliable and accurate for precise O2 concentrations, using Bernoulli principle. Used in COPD to avoid suppressing hypoxic drive. (PTS:1 REF:p.613)"
+        },
+        { //40
+            id: 40,
+            question: "The nurse is caring for a client who is experiencing mild shortness of breath during the immediate postoperative period, with oxygen saturation readings between 89% and 91%. Which method of oxygen delivery is most appropriate for the client's needs?",
+            options: [
+                "A. Nonrebreathing mask",
+                "B. Nasal cannula",
+                "C. Venturi mask",
+                "D. Partial-rebreathing mask"
+            ],
+            correct: 1, // B
+            rationale: "Nasal cannula used for low-medium O2 when precise accuracy not essential. Venturi is for COPD with hypoxic drive; non-rebreather too high for mild hypoxia. (PTS:1 REF:p.613)"
+        }
+    ];
+
+    // --- same logic as template (navigation, selection, keyboard) ---
+    let currentQuestion = 0;
+    let selectedOption = null;
+    let answers = Array(questions.length).fill(null);
+
+    function loadQuestion() {
+        const q = questions[currentQuestion];
+        if (!q) return;
+
+        const progress = ((currentQuestion + 1) / questions.length) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+        document.getElementById('counter').textContent = `${currentQuestion + 1}/${questions.length}`;
+        document.getElementById('questionNumber').textContent = q.id;
+
+        document.getElementById('question').innerHTML = q.question;
+        loadOptions(q);
+
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('cancelBtn').classList.remove('show');
+
+        document.getElementById('prevBtn').disabled = currentQuestion === 0;
+        const stored = answers[currentQuestion];
+        document.getElementById('nextBtn').disabled = stored === null || stored === undefined;
+        document.getElementById('nextBtn').textContent = currentQuestion >= questions.length - 1 ? 'FINISH ➡️' : 'NEXT ➡️';
+    }
+
+    function loadOptions(q) {
+        const container = document.getElementById('options');
+        container.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.innerHTML = `<div class="option-letter">${String.fromCharCode(65 + idx)}</div><div>${opt}</div>`;
+            div.onclick = () => selectOption(idx);
+            container.appendChild(div);
+        });
+
+        const saved = answers[currentQuestion];
+        if (saved !== null && saved !== undefined) {
+            selectOption(saved, true);
+        }
+    }
+
+    function selectOption(index, fromMemory = false) {
+        const q = questions[currentQuestion];
+        if (!fromMemory && selectedOption !== null) return;
+
+        if (!fromMemory) {
+            selectedOption = index;
+            answers[currentQuestion] = index;
+        }
+
+        highlightSelected(index, q);
+        showFeedback(index, q);
+        document.getElementById('nextBtn').disabled = false;
+        document.getElementById('cancelBtn').classList.add('show');
+    }
+
+    function highlightSelected(index, q) {
+        const opts = document.querySelectorAll('.option');
+        opts.forEach((opt, i) => opt.classList.remove('correct', 'incorrect'));
+
+        const correctIndices = Array.isArray(q.correct) ? q.correct : [q.correct];
+        if (Array.isArray(q.correct)) {
+            correctIndices.forEach(ci => opts[ci]?.classList.add('correct'));
+            if (!correctIndices.includes(index)) {
+                opts[index]?.classList.add('incorrect');
+            }
+        } else {
+            if (index === q.correct) {
+                opts[index].classList.add('correct');
+            } else {
+                opts[index].classList.add('incorrect');
+                opts[q.correct].classList.add('correct');
+            }
+        }
+    }
+
+    function showFeedback(index, q) {
+        const fb = document.getElementById('feedback');
+        const icon = document.getElementById('feedbackIcon');
+        const text = document.getElementById('feedbackText');
+        const rationaleDiv = document.getElementById('rationale');
+        const rationaleP = document.getElementById('rationaleText');
+
+        const correctIndices = Array.isArray(q.correct) ? q.correct : [q.correct];
+        const isCorrect = correctIndices.includes(index);
+
+        if (isCorrect) {
+            fb.className = 'feedback correct';
+            icon.textContent = '✅';
+            text.textContent = 'CORRECT!';
+        } else {
+            fb.className = 'feedback incorrect';
+            icon.textContent = '❌';
+            const letters = correctIndices.map(c => String.fromCharCode(65 + c)).join(', ');
+            text.textContent = `INCORRECT. Correct answer(s): ${letters}`;
+        }
+
+        fb.style.display = 'flex';
+        rationaleP.innerHTML = q.rationale;
+        rationaleDiv.classList.add('show');
+    }
+
+    function cancelSelection() {
+        const q = questions[currentQuestion];
+        selectedOption = null;
+        answers[currentQuestion] = null;
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('correct', 'incorrect'));
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = true;
+    }
+
+    function nextCard() {
+        if (currentQuestion < questions.length - 1) {
+            currentQuestion++;
+            selectedOption = null;
+            loadQuestion();
+        } else {
+            currentQuestion = 0;
+            loadQuestion();
+        }
+    }
+
+    function previousCard() {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            const q = questions[currentQuestion];
+            selectedOption = answers[currentQuestion];
+            loadQuestion();
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key >= '1' && e.key <= '4') selectOption(parseInt(e.key)-1);
+        else if (e.key >= 'a' && e.key <= 'd') selectOption(e.key.charCodeAt(0)-97);
+        else if (e.key >= 'A' && e.key <= 'D') selectOption(e.key.charCodeAt(0)-65);
+        else if (e.key === 'ArrowLeft' && !document.getElementById('prevBtn').disabled) previousCard();
+        else if (e.key === 'ArrowRight' && !document.getElementById('nextBtn').disabled) nextCard();
+        else if (e.key === 'Escape' && document.getElementById('cancelBtn').classList.contains('show')) cancelSelection();
+    });
+
+    loadQuestion();
+</script>
+</body>
+</html>
